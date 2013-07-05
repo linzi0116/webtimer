@@ -1,7 +1,12 @@
 var bg = chrome.extension.getBackgroundPage();
 
 $(function () { 
-    var chartData = getPieData(bg.mode);
+    show(bg.TYPE.today);
+});
+
+// draw the chart
+function displayChart(mode) {
+    var chartData = getPieData(mode);
     $('#chart_div').highcharts({
 	title: { text: null },
 	chart :{
@@ -39,7 +44,7 @@ $(function () {
     $('#table_div').highcharts({
 	chart: { 
 	    type: 'column',
-	    height: 280
+	    height: 250
 	},
 	title: { text: null },
 	xAxis: { 
@@ -68,7 +73,7 @@ $(function () {
 	    }
 	}]
     });
-});
+}
 
 
 // Converts duration to String
@@ -108,7 +113,7 @@ function timeString(numSeconds) {
 }
 
 
-// Show the data for the time period indicated by addon
+// get data from localStorage
 function getPieData(type) {
   // Get the domain data
   var domains = JSON.parse(localStorage["domains"]);
@@ -181,9 +186,7 @@ function updateNav(type) {
 
 function show(mode) {
   bg.mode = mode;
-  var chart = $('#chart_div').highcharts();
-  var chart = $('#table_div').highcharts();
-  chart.redraw();
+  displayChart(mode);
   updateNav(mode);
 }
 
